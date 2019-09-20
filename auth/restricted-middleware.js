@@ -1,8 +1,17 @@
-module.exports = (req, res, next) => {
-    if (req.session && req.session.user) {
-        next();
-    } else {
-        res.status(401).json({ message: 'No Cookies Found, You no Get in.' })
-    }
+const jwt = require('jsonwebtoken')
 
+module.exports = (req, res, next) => {
+    const token = req.headers.authorization;
+
+    if (token) {
+        jwt.verify(token, secret, (err, decodedToken) => {
+            if (err) {
+                // Token Expired or is invalid
+                res.status(401).json({ message: 'Invalid Login or Token Expired.' })
+            } else {
+                // Token is good
+                next()
+            }
+        })
+    }
 };
