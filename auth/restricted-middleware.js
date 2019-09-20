@@ -10,6 +10,7 @@ module.exports = (req, res, next) => {
                 res.status(401).json({ message: 'Invalid Login or Token Expired.' })
             } else {
                 // Token is good
+                req.user = { username: decodedToken.username }
                 next()
             }
         })
