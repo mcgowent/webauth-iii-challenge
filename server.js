@@ -10,27 +10,11 @@ const knexConnection = require('./data/db-config')
 
 const server = express();
 
-const sessionConfig = {
-    name: 'monkey', // sid
-    secret: 'keep it secret, keep it safe!',
-    cookie: {
-        maxAge: 1000 * 300, // 300 seconds
-        secure: false, // TRUE in production
-        httpOnly: true,
-    },
-    resave: false,
-    saveUninitialized: false, // GDPR laws against setting cookies automatically
-    store: new KnexSessionStore({
-        knex: knexConnection,
-        createtable: true,
-        clearInterval: 1000 * 60 * 30, // How long before expired sessions delete: 30 mins
-    })
-}
+
 
 server.use(cors());
 server.use(helmet());
 server.use(express.json());
-server.use(session(sessionConfig));
 
 server.use('/api/auth', AuthRouter);
 server.use('/api/users', UsersRouter);
